@@ -11,9 +11,11 @@
 # I am unsure about how the temporal gradient test gets the previous file.
 
 
-from hfradarpy.radials import Radial, qc_radial_file
+from hfradarpy.radials import Radial
 import glob
 import os
+
+from qc_radials import QCRadial, qc_radial_file_with_qccodar
 
 site = 'CORE/'
 
@@ -32,6 +34,12 @@ def run_tests(r):
     # run high frequency radar qartod tests on open radial file
 
     qc_values = dict(
+        # qccodar qc tests
+        qc_doa_peak_power=dict(doa_peak_power_min=5.0),
+        qc_doa_half_power_width=dict(doa_half_power_width_max=50.0),
+        qc_monopole_snr=dict(monopole_snr_min=5.0),
+        qc_loop_snr=dict(loop_snr_min=5.0),
+        # HFRadar-py qc tests
         qc_qartod_avg_radial_bearing=dict(reference_bearing=151, warning_threshold=15, failure_threshold=30),
         qc_qartod_radial_count=dict(min_count=75.0, low_count=225.0),
         qc_qartod_maximum_velocity=dict(max_speed=300.0, high_speed=100.0),
@@ -41,7 +49,8 @@ def run_tests(r):
                                              'qc_qartod_maximum_velocity', 'qc_qartod_spatial_median'])
     )
     
-    qc_radial_file(radial_file=r, qc_values=qc_values, export="radial", save_path=save_dir, clean=True, clean_path=clean_dir)
+    # qc_radial_file(radial_file=r, qc_values=qc_values, export="radial", save_path=save_dir, clean=True, clean_path=clean_dir)
+    qc_radial_file_with_qccodar(radial_file=r, qc_values=qc_values, export="radial", save_path=save_dir, clean=True, clean_path=clean_dir)
     
     #file_name = r.file_name[:-4:] + '_proc.ruv'
 
@@ -50,7 +59,8 @@ def run_tests(r):
 #prev = files[0]
 
 for f in files:
-    r = Radial(f)
+    r = QCRadial(f)
+    print(r.data)
     print(r.file_name)
     run_tests(r)
     #prev = radial_dir + r.file_name
