@@ -163,8 +163,8 @@ def interpolation(R, d):
                 if len(cluster) > 2:
                     # +2 to finish the interpolation at the end
                     new_angles = np.arange(cluster[0], cluster[-1] + 2, 2)
-                    if_lon = interp1d(np.array(cluster), np.array(temp_lon[n][start:i]), kind='quadratic')
-                    if_lat = interp1d(np.array(cluster), np.array(temp_lat[t][start:i]), kind='quadratic')
+                    if_lon = interp1d(np.array(cluster), np.array(temp_lon[n][start:i]), kind='quadratic', fill_value="extrapolate")
+                    if_lat = interp1d(np.array(cluster), np.array(temp_lat[t][start:i]), kind='quadratic', fill_value="extrapolate")
                     i_lon = if_lon(new_angles)
                     i_lat = if_lat(new_angles)
 
@@ -173,8 +173,8 @@ def interpolation(R, d):
                         
                         # getting the index for bearing
                         c = int((p - minc) / 2)
-                
-                        if interpolated_matrix[r][c] != 1:
+
+                        if c < len(interpolated_matrix[r]) and interpolated_matrix[r][c] != 1:
                             lon_matrix[r][c] = o
                             lat_matrix[r][c] = a
                             interpolated_matrix[r][c] = 2

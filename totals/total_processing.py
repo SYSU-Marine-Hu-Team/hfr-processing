@@ -84,7 +84,8 @@ def selectRadials(paths, times):
     
     for t in times:
     
-        wildcard = '*' + t + '.ruv'
+        # wildcard = '*' + t + '.ruv'
+        wildcard = '*' + t + '*'
    
         for p in paths:
             # search for radial files
@@ -556,7 +557,7 @@ def processTotals(T, dx, dy):
 #-------------------------------------------------------------------------------
 
 # performRadialCombination - combine radials into totals
-def performRadialCombination(paths, time, interpolate=False, gridRes=3000, searchRad=5000):
+def performRadialCombination(paths, times, interpolate=False, gridRes=3000, searchRad=5000):
     
     """
     this function performs the least square combination of the input Radials and creates
@@ -579,7 +580,7 @@ def performRadialCombination(paths, time, interpolate=False, gridRes=3000, searc
 
     rads, bb = selectRadials(paths, times)
     #print(rads)
-    #print(bb)
+    print(bb)
     
     if len(rads) < 2:
         print("Not enough radial data to create total.")
@@ -635,26 +636,20 @@ def performRadialCombination(paths, time, interpolate=False, gridRes=3000, searc
 
 
 
-paths = [radial_dir1, radial_dir2, radial_dir3]
-times = ['2024_04_20_0700']
+# paths = [radial_dir1, radial_dir2, radial_dir3]
+# times = ['2024_04_20_0700']
+paths = [
+    "../radial-data/processed/HATY/",
+    "../radial-data/processed/DUCK/",
+    "../radial-data/processed/CORE/",
+]
+# times = ['2014_11_03_0100']
+times = [f"2014_11_03_{str(i).zfill(2)}00" for i in range(24)]
 
 # calls the function to turn the radials into a total and also plots the total
-T = performRadialCombination(paths, times, interpolate=True)
 
-
-
-
-
-
-
-
-
-    
-    
-    
-    
-    
-    
-    
-    
+for t in times:
+    print(f"Processing time: {t}")
+    T = performRadialCombination(paths, [t], interpolate=True)
+# T = performRadialCombination(paths, times, interpolate=False)
 

@@ -1,3 +1,20 @@
+# data
+radial-data/*
+~radial-data/JEFF
+~radial-data/MARA
+~radial-data/WEST
+
+total-data/*
+~total-data/total_2024_04_20_*.pkl
+
+# plot results
+total-plots/*.png
+~total-plots/total_2024_04_20_*.png
+
+radial-plots/*
+~radial-plots/JEFF
+~radial-plots/MARA
+~radial-plots/WEST
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

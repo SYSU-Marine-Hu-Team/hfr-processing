@@ -18,7 +18,8 @@ save_dir = '../radial-plot/raw/' + site
 
 
 # Use glob to find radial files (*
-files = sorted(glob.glob(os.path.join(radial_dir, '*.ruv')))
+# files = sorted(glob.glob(os.path.join(radial_dir, '*.ruv')))
+files = sorted(glob.glob(os.path.join(radial_dir, '*')))
 
 
 def save_radial(r):

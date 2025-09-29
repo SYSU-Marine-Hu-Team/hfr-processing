@@ -15,7 +15,7 @@ from hfradarpy.radials import Radial, qc_radial_file
 import glob
 import os
 
-site = 'MARA/'
+site = 'CORE/'
 
 # Path to radial directory
 radial_dir = '../radial-data/raw/' + site
@@ -23,7 +23,9 @@ save_dir = '../radial-data/flagged/' + site
 clean_dir = '../radial-data/processed/' + site
 
 # Use glob to find radial files (*
-files = sorted(glob.glob(os.path.join(radial_dir, '*.ruv')))
+# files = sorted(glob.glob(os.path.join(radial_dir, '*.ruv')))
+files = sorted(glob.glob(os.path.join(radial_dir, '*')))
+print(files)
 
 def run_tests(r):
 

@@ -10,7 +10,7 @@ import glob
 import os
 import xarray as xr
 
-site = 'MARA/'
+site = 'HATY/'
 
 # Path to radial directory
 radial_dir = '../radial-data/flagged/' + site
@@ -18,7 +18,8 @@ save_dir = '../radial-plots/flagged/' + site
 
 
 # Use glob to find radial files (*
-files = sorted(glob.glob(os.path.join(radial_dir, '*.ruv')))
+# files = sorted(glob.glob(os.path.join(radial_dir, '*.ruv')))
+files = sorted(glob.glob(os.path.join(radial_dir, '*')))
 
 
 def plot_pf(r):
@@ -44,18 +45,18 @@ def plot_pf(r):
     edgecolor = 'black'
     landcolor = 'tan'
 
-    LAND = cfeature.NaturalEarthFeature(
-        'physical', 'land', '10m',
-        edgecolor='face',
-        facecolor='tan'
-    )
+    # LAND = cfeature.NaturalEarthFeature(
+    #     'physical', 'land', '10m',
+    #     edgecolor='face',
+    #     facecolor='tan'
+    # )
 
-    state_lines = cfeature.NaturalEarthFeature(
-        category='cultural',
-        name='admin_1_states_provinces_lines',
-        scale='50m',
-        facecolor='none'
-    )
+    # state_lines = cfeature.NaturalEarthFeature(
+    #     category='cultural',
+    #     name='admin_1_states_provinces_lines',
+    #     scale='50m',
+    #     facecolor='none'
+    # )
 
     extent = []
 
@@ -70,12 +71,14 @@ def plot_pf(r):
     def map_features(ax):
         # Axes properties and features
         ax.set_extent(extent)
-        ax.add_feature(LAND, edgecolor=edgecolor, facecolor=landcolor)
+        # ax.add_feature(LAND, edgecolor=edgecolor, facecolor=landcolor)
+        ax.add_feature(cfeature.LAND, edgecolor=edgecolor, facecolor=landcolor)
+        ax.add_feature(cfeature.COASTLINE)
         ax.add_feature(cfeature.OCEAN)
         ax.add_feature(cfeature.RIVERS)
         ax.add_feature(cfeature.LAKES)
-        ax.add_feature(cfeature.BORDERS)
-        ax.add_feature(state_lines, zorder=11, edgecolor=edgecolor)
+        # ax.add_feature(cfeature.BORDERS)
+        # ax.add_feature(state_lines, zorder=11, edgecolor=edgecolor)
 
         # Gridlines and grid labels
         gl = ax.gridlines(
@@ -199,8 +202,11 @@ def plot_pf(r):
     file_name = r.file_name[:-4:] + '_PF.png'
 
     print(f'{file_name}')
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
 
-    fig.savefig(save_dir + file_name)
+    print(f'Saved figure to {save_dir + file_name}')
+    fig.savefig(save_dir + file_name, dpi=300)
     
 for f in files:
     r = Radial(f)

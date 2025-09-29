@@ -149,7 +149,7 @@ class fileParser(object):
             self.full_file = os.path.realpath(fname)
             extension = os.path.splitext(fname)[1]
             
-            if (extension == '.ruv') or (extension == '.tuv'):
+            if (extension == '.ruv') or (extension == '.tuv') or (extension == ".hfrss10lluv"):
                 self.CTFparser()
             elif extension == '.crad_ascii':
                 self.CRADparser()
