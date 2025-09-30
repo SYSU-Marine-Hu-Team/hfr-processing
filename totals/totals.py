@@ -363,12 +363,15 @@ class Total(fileParser):
         ax = fig.add_subplot(1, 1, 1, projection=ccrs.Mercator())
         
         fig.tight_layout(pad=8)
+
+        siteLon = self.site_source['Lon'].to_numpy()
+        siteLat = self.site_source['Lat'].to_numpy()
         
         # get the bounding box limits
-        lon_min = self.data.LOND.min() - 0.25
-        lon_max = self.data.LOND.max() + 0.25
-        lat_min = self.data.LATD.min() - 0.3
-        lat_max = self.data.LATD.max() + 0.5
+        lon_min = min(self.data.LOND.min(), siteLon.min()) - 0.25
+        lon_max = max(self.data.LOND.max(), siteLon.max()) + 0.25
+        lat_min = min(self.data.LATD.min(), siteLat.min()) - 0.3
+        lat_max = max(self.data.LATD.max(), siteLat.max()) + 0.5
          
         # Set colors of the land. 
         edgecolor = 'black'
@@ -425,9 +428,8 @@ class Total(fileParser):
         y = self.data.LATD
         
         extent = [lon_min, lon_max, lat_min, lat_max]
-        #ax.set_extent(extent)
+        ax.set_extent(extent)
         #print(extent)
-        ax.set_extent([-83.543, -80.032, 22.924, 25.024])
         
         ax.add_feature(LAND, edgecolor=edgecolor, facecolor=landcolor)
         #ax.add_feature(cfeature.OCEAN)
@@ -599,9 +601,10 @@ class Total(fileParser):
                                         coords={'LONGITUDE': lon_dim})  
         
         # attach the dictionary to the Total object
-        self.xdr = xdr
+        xdr = xr.Dataset(xdr)
+        self.xdr =  xdr
         
-        return
+        return xdr
     
 
     def initialize_qc(self):

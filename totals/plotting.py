@@ -18,11 +18,11 @@ from oceans.ocfis import uv2spdir, spdir2uv
 import matplotlib.ticker as mticker
 from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
     
-         
+fig = plt.figure(figsize=(24, 16))
+
 def plot_cartopy(T, show=True, save=False):
 
     # initialize figure
-    fig = plt.figure(figsize=(24, 16))
     #fig = plt.figure()
     
     ax = fig.add_subplot(1, 1, 1, projection=ccrs.Mercator())
@@ -92,6 +92,7 @@ def plot_cartopy(T, show=True, save=False):
     y = T.data.LATD
     
     extent = [lon_min, lon_max, lat_min, lat_max]
+    print("extent: ", extent)
     ax.set_extent(extent)
     
     ax.add_feature(LAND, edgecolor=edgecolor, facecolor=landcolor)
@@ -124,15 +125,15 @@ def plot_cartopy(T, show=True, save=False):
     #color_clipped = np.clip(speed, 0, 1).squeeze()
 
     # Make the quiver plot
-    plt.quiver(x, y, u * 0.75 + u_norm * 0.25, v * 0.75 + v_norm * 0.25, vel, cmap=plt.cm.jet, width=0.001, headwidth=4, headlength=4, headaxislength=4, transform=ccrs.PlateCarree())
+    q = ax.quiver(x, y, u * 0.75 + u_norm * 0.25, v * 0.75 + v_norm * 0.25, vel, cmap=plt.cm.jet, width=0.001, headwidth=4, headlength=4, headaxislength=4, transform=ccrs.PlateCarree())
 
     # Add colorbar
-    cbar = plt.colorbar(fraction=0.028, pad=0.02)
+    cbar = fig.colorbar(q, fraction=0.028, pad=0.02)
     cbar.ax.tick_params(labelsize=16)
     cbar.set_label('m/s', fontsize=18)
     
     # Add title
-    plt.title(T.file_name + ' Total Velocity Field', fontdict={'fontsize': 28, 'fontweight' : 'bold'})
+    ax.set_title(T.file_name + ' Total Velocity Field', fontdict={'fontsize': 28, 'fontweight' : 'bold'})
             
     if show:
         plt.show()
@@ -146,6 +147,7 @@ def plot_cartopy(T, show=True, save=False):
         print(save_dir)
         print(photo_name)
         fig.savefig(save_dir + photo_name)
+        fig.clear()
     
     return fig
     

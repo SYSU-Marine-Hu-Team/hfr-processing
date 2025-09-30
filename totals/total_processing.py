@@ -575,6 +575,10 @@ def performRadialCombination(paths, times, interpolate=False, gridRes=3000, sear
     OUTPUTS: T = Total object
         
     """
+    from pathlib import Path
+
+    if Path(folder + 'total_' + times[0] + '.nc').exists():
+        return
 
     # the format of bb = [lonMin, lonMax, latMin, latMax]
 
@@ -620,8 +624,9 @@ def performRadialCombination(paths, times, interpolate=False, gridRes=3000, sear
     pkl_name = 'total_' + times[0] + '.pkl'
     folder = '../total-data/'
 
-    with open(folder + pkl_name, 'wb') as file:
-        pickle.dump(T, file)
+    # with open(folder + pkl_name, 'wb') as file:
+    #     pickle.dump(T, file)
+    T.to_xarray().to_netcdf(folder + 'total_' + times[0] + '.nc')
         
     total_plots = '../total-plots/'
     #T.plot(show=False, shade=True, save=True, save_dir=total_plots, interpolated=interpolate)

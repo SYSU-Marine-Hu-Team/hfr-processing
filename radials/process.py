@@ -11,7 +11,7 @@
 # I am unsure about how the temporal gradient test gets the previous file.
 
 
-from hfradarpy.radials import Radial
+from hfradarpy.radials import Radial, qc_radial_file
 import glob
 import os
 
@@ -49,8 +49,8 @@ def run_tests(r):
                                              'qc_qartod_maximum_velocity', 'qc_qartod_spatial_median'])
     )
     
-    # qc_radial_file(radial_file=r, qc_values=qc_values, export="radial", save_path=save_dir, clean=True, clean_path=clean_dir)
-    qc_radial_file_with_qccodar(radial_file=r, qc_values=qc_values, export="radial", save_path=save_dir, clean=True, clean_path=clean_dir)
+    qc_radial_file(radial_file=r, qc_values=qc_values, export="radial", save_path=save_dir, clean=True, clean_path=clean_dir)
+    # qc_radial_file_with_qccodar(radial_file=r, qc_values=qc_values, export="radial", save_path=save_dir, clean=True, clean_path=clean_dir)
     
     #file_name = r.file_name[:-4:] + '_proc.ruv'
 
